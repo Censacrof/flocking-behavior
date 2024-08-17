@@ -2,6 +2,7 @@ import { Sky } from "three/addons/objects/Sky.js";
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
 import { Bird } from "./scene/Bird";
+import { degToRad } from "three/src/math/MathUtils.js";
 
 export function App() {
   return (
@@ -100,7 +101,7 @@ function setupScene(targetDiv: HTMLDivElement) {
   const bird = new Bird();
   scene.add(bird);
 
-  let cameraAngle = 0;
+  let cameraAngle = degToRad(90);
   function animate() {
     cameraAngle += CAMERA_ANGULAR_SPEED;
     camera.position.x = CAMERA_RADIUS * Math.cos(cameraAngle);
