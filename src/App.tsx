@@ -48,13 +48,6 @@ function setupScene(targetDiv: HTMLDivElement) {
   const gridHelper = new THREE.GridHelper();
   scene.add(gridHelper);
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshPhysicalMaterial({
-    color: 0x00ff00,
-  });
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
-
   const sky = new Sky();
   sky.scale.setScalar(450000);
 
@@ -113,9 +106,6 @@ function setupScene(targetDiv: HTMLDivElement) {
     camera.position.x = CAMERA_RADIUS * Math.cos(cameraAngle);
     camera.position.z = CAMERA_RADIUS * Math.sin(cameraAngle);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
 
     bird.update(1 / 60);
 
