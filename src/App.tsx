@@ -1,6 +1,7 @@
 import { Sky } from "three/addons/objects/Sky.js";
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
+import { VerletObject3D } from "./scene/bird";
 
 export function App() {
   return (
@@ -97,11 +98,14 @@ function setupScene(targetDiv: HTMLDivElement) {
 
   const CAMERA_RADIUS = 10;
   const CAMERA_ANGULAR_SPEED = 0.0025;
-  camera.position.y = -2;
+  camera.position.y = 2;
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(WIDTH, HEIGHT);
   targetDiv.appendChild(renderer.domElement);
+
+  const bird = new VerletObject3D();
+  scene.add(bird);
 
   let cameraAngle = 0;
   function animate() {
@@ -112,6 +116,8 @@ function setupScene(targetDiv: HTMLDivElement) {
 
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+
+    bird.update(1);
 
     renderer.render(scene, camera);
   }
