@@ -4,10 +4,17 @@ import { useEffect, useRef } from "react";
 
 export function App() {
   return (
-    <>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <h1>Hello World</h1>
       <ThreeContaier />
-    </>
+    </div>
   );
 }
 
@@ -27,12 +34,12 @@ function ThreeContaier() {
     };
   }, []);
 
-  return <div ref={ref} />;
+  return <div ref={ref} style={{ flexGrow: 1, alignSelf: "stretch" }} />;
 }
 
 function setupScene(targetDiv: HTMLDivElement) {
-  const WIDTH = 600;
-  const HEIGHT = 400;
+  const WIDTH = targetDiv.clientWidth;
+  const HEIGHT = targetDiv.clientHeight;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000);
@@ -50,7 +57,7 @@ function setupScene(targetDiv: HTMLDivElement) {
   const sky = new Sky();
   sky.scale.setScalar(450000);
 
-  const phi = THREE.MathUtils.degToRad(90);
+  const phi = THREE.MathUtils.degToRad(88);
   const theta = THREE.MathUtils.degToRad(180);
   const sunPosition = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
   sky.material.uniforms.sunPosition.value = sunPosition;
@@ -58,7 +65,7 @@ function setupScene(targetDiv: HTMLDivElement) {
   scene.add(sky);
 
   const MAX_AMBIENT_LIGHT = 0.5;
-  const MIN_AMBIENT_LIGHT = 0.05;
+  const MIN_AMBIENT_LIGHT = 0.1;
   const sunContribution = Math.max(
     0,
     new THREE.Vector3(0, 1, 0).dot(sunPosition.normalize()),
@@ -88,9 +95,9 @@ function setupScene(targetDiv: HTMLDivElement) {
 
   scene.add(new THREE.DirectionalLightHelper(directionalLight, 1));
 
-  const CAMERA_RADIUS = 5;
-  const CAMERA_ANGULAR_SPEED = 0.01;
-  camera.position.y = 1;
+  const CAMERA_RADIUS = 10;
+  const CAMERA_ANGULAR_SPEED = 0.0025;
+  camera.position.y = -2;
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(WIDTH, HEIGHT);
