@@ -37,9 +37,17 @@ function setupScene(targetDiv: HTMLDivElement) {
   const camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000);
 
   const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const material = new THREE.MeshPhysicalMaterial({
+    color: 0x00ff00,
+  });
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
+  scene.add(ambientLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+  scene.add(directionalLight);
 
   camera.position.z = 5;
 
