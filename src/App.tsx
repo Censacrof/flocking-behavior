@@ -29,15 +29,36 @@ function ThreeContaier() {
       return;
     }
 
-    const renderer = setupScene(target);
+    const clean = setupScene(target);
 
     return () => {
-      target.innerHTML = "";
-      renderer.dispose();
+      clean();
     };
   }, []);
 
-  return <div ref={ref} style={{ flexGrow: 1, alignSelf: "stretch" }} />;
+  return (
+    <div
+      ref={ref}
+      style={{ flexGrow: 1, alignSelf: "stretch", position: "relative" }}
+    >
+      <div
+        id="overlay"
+        style={{
+          position: "absolute",
+          textAlign: "end",
+          width: "5rem",
+          padding: "0.25rem",
+          display: "flex",
+          flexDirection: "column",
+          right: "1rem",
+          top: "1rem",
+          backgroundColor: "#00ff0044",
+        }}
+      >
+        <span id="fps">fps</span>
+      </div>
+    </div>
+  );
 }
 
 function setupScene(targetDiv: HTMLDivElement) {
@@ -92,33 +113,58 @@ function setupScene(targetDiv: HTMLDivElement) {
   scene.add(new THREE.DirectionalLightHelper(directionalLight, 1));
 
   const CAMERA_RADIUS = 10;
-  const CAMERA_ANGULAR_SPEED = 0.0025;
+  const CAMERA_ANGULAR_SPEED = 0.1;
   camera.position.y = 2;
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(WIDTH, HEIGHT);
   targetDiv.appendChild(renderer.domElement);
 
-  const bird = new Bird();
-  scene.add(bird);
+  const birds = [...Array(20)].map(() => {
+    const bird = new Bird();
+    scene.add(bird);
+
+    return bird;
+  });
 
   let cameraAngle = degToRad(90);
   let previousTime = performance.now();
+
+  let shouldUpdateFps = true;
+  const fpsUpdateInterval = setInterval(() => {
+    shouldUpdateFps = true;
+  }, 250);
+
   function animate() {
     const currentTime = performance.now();
     const delta = (currentTime - previousTime) / 1000;
     previousTime = currentTime;
+    const fps = 1 / delta;
 
-    cameraAngle += CAMERA_ANGULAR_SPEED;
+    // display fps
+    if (shouldUpdateFps) {
+      const $fps = targetDiv.querySelector("#fps");
+      $fps!.textContent = `fps: ${fps.toFixed(0)}`;
+      shouldUpdateFps = false;
+    }
+
+    cameraAngle += CAMERA_ANGULAR_SPEED * delta;
     camera.position.x = CAMERA_RADIUS * Math.cos(cameraAngle);
     camera.position.z = CAMERA_RADIUS * Math.sin(cameraAngle);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    bird.update(delta);
+    birds.forEach((b) => b.update(delta));
 
     renderer.render(scene, camera);
   }
   renderer.setAnimationLoop(animate);
 
-  return renderer;
+  const clean = () => {
+    renderer.dispose();
+    targetDiv.removeChild(renderer.domElement);
+
+    clearInterval(fpsUpdateInterval);
+  };
+
+  return clean;
 }
