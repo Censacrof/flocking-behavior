@@ -18,12 +18,21 @@ export class Bird extends VerletObject3D {
     mesh.position.setZ(-coneHeight / 2);
     mesh.rotateX(degToRad(-90));
     this.add(mesh);
-
-    this.velocity.randomDirection().multiplyScalar(this.speed);
   }
 
+  framesLeft = 0;
   public update(delta: number) {
-    this.lookAt(this.velocity.clone().multiplyScalar(-1).normalize());
+    this.framesLeft -= 1;
+    if (this.framesLeft <= 0) {
+      this.velocity.randomDirection().multiplyScalar(this.speed);
+      this.framesLeft = 120;
+    }
+
+    this.lookAt(
+      this.position
+        .clone()
+        .add(this.velocity.clone().multiplyScalar(-1).normalize()),
+    );
 
     super.update(delta);
   }
