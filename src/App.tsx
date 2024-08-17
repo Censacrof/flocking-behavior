@@ -29,10 +29,11 @@ function ThreeContaier() {
       return;
     }
 
-    setupScene(target);
+    const renderer = setupScene(target);
 
     return () => {
       target.innerHTML = "";
+      renderer.dispose();
     };
   }, []);
 
@@ -102,15 +103,22 @@ function setupScene(targetDiv: HTMLDivElement) {
   scene.add(bird);
 
   let cameraAngle = degToRad(90);
+  let previousTime = performance.now();
   function animate() {
+    const currentTime = performance.now();
+    const delta = (currentTime - previousTime) / 1000;
+    previousTime = currentTime;
+
     cameraAngle += CAMERA_ANGULAR_SPEED;
     camera.position.x = CAMERA_RADIUS * Math.cos(cameraAngle);
     camera.position.z = CAMERA_RADIUS * Math.sin(cameraAngle);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    bird.update(1 / 60);
+    bird.update(delta);
 
     renderer.render(scene, camera);
   }
   renderer.setAnimationLoop(animate);
+
+  return renderer;
 }
