@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { useEffect, useRef } from "react";
 import { Bird } from "./scene/Bird";
 import { degToRad } from "three/src/math/MathUtils.js";
+import { Flock } from "./scene/Fock";
 
 export function App() {
   return (
@@ -120,13 +121,6 @@ function setupScene(targetDiv: HTMLDivElement) {
   renderer.setSize(WIDTH, HEIGHT);
   targetDiv.appendChild(renderer.domElement);
 
-  const birds = [...Array(20)].map(() => {
-    const bird = new Bird();
-    scene.add(bird);
-
-    return bird;
-  });
-
   let cameraAngle = degToRad(90);
   let previousTime = performance.now();
 
@@ -134,6 +128,9 @@ function setupScene(targetDiv: HTMLDivElement) {
   const fpsUpdateInterval = setInterval(() => {
     shouldUpdateFps = true;
   }, 250);
+
+  const flock = new Flock();
+  scene.add(flock);
 
   function animate() {
     const currentTime = performance.now();
@@ -153,7 +150,7 @@ function setupScene(targetDiv: HTMLDivElement) {
     camera.position.z = CAMERA_RADIUS * Math.sin(cameraAngle);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    birds.forEach((b) => b.update(delta));
+    flock.update(delta);
 
     renderer.render(scene, camera);
   }

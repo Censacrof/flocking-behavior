@@ -1,3 +1,3 @@
 export type Entity = {
-  update: (delta: number) => void;
+  update(delta: number): void;
 };
