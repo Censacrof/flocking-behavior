@@ -36,17 +36,6 @@ export class Bird extends VerletObject3D {
       this.applyForce(this.position.clone().normalize().multiplyScalar(-5));
     }
 
-    // if (this.velocity.clone().length() > this.TARGET_SPEED) {
-    //   this.applyForce(
-    //     this.velocity
-    //       .clone()
-    //       .normalize()
-    //       .multiplyScalar(this.TARGET_SPEED)
-    //       .sub(this.velocity.clone())
-    //       .multiplyScalar(0.5),
-    //   );
-    // }
-
     const targetVelocity = this.velocity
       .clone()
       .normalize()

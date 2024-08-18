@@ -1,4 +1,5 @@
 import { Object3D, Vector3 } from "three";
+
 import { Bird } from "./Bird";
 import { Entity } from "./Entity";
 import { VerletObject3D } from "./VerletObject3D";
@@ -12,7 +13,8 @@ export class Flock extends Object3D implements Entity {
   ALIGNMENT_RADIUS = 2;
   ALIGNMENT_FORCE = 4;
 
-  COHESION_RADIUS = 3;
+  COHESION_RADIUS = 6;
+  COHESION_FORCE = 1;
 
   birds;
   constructor() {
@@ -84,8 +86,10 @@ export class Flock extends Object3D implements Entity {
         birdsInCohesionRange.forEach((b) => center.add(b.position.clone()));
         center.divideScalar(birdsInCohesionRange.length);
 
-        // const diff = center.clone().sub(currentBird.position)
-        // currentBird.applyForce(
+        const diff = center.clone().sub(currentBird.position);
+        currentBird.applyForce(
+          diff.clone().normalize().multiplyScalar(this.COHESION_FORCE),
+        );
       }
     });
   }
