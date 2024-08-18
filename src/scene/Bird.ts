@@ -1,4 +1,4 @@
-import { ConeGeometry, Mesh, MeshPhysicalMaterial, Vector3 } from "three";
+import { ConeGeometry, Mesh, MeshPhysicalMaterial } from "three";
 import { VerletObject3D } from "./VerletObject3D";
 import { degToRad } from "three/src/math/MathUtils.js";
 
@@ -32,7 +32,7 @@ export class Bird extends VerletObject3D {
     );
 
     if (this.position.clone().length() > this.MAX_DISTANCE_FROM_ORIGIN) {
-      this.position.normalize().multiplyScalar(this.MAX_DISTANCE_FROM_ORIGIN);
+      // this.position.normalize().multiplyScalar(this.MAX_DISTANCE_FROM_ORIGIN);
       this.applyForce(this.position.clone().normalize().multiplyScalar(-1));
     }
 
