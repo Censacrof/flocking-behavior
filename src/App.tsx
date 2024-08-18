@@ -3,14 +3,7 @@ import { setupScene } from "./scene/setupScene";
 
 export function App() {
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="fixed inset-0 flex flex-col">
       <h1>Flocking Behaviour</h1>
       <ThreeContaier />
     </div>
@@ -34,23 +27,10 @@ function ThreeContaier() {
   }, []);
 
   return (
-    <div
-      ref={ref}
-      style={{ flexGrow: 1, alignSelf: "stretch", position: "relative" }}
-    >
+    <div ref={ref} className="grow self-stretch relative">
       <div
         id="overlay"
-        style={{
-          position: "absolute",
-          textAlign: "end",
-          width: "5rem",
-          padding: "0.25rem",
-          display: "flex",
-          flexDirection: "column",
-          right: "1rem",
-          top: "1rem",
-          backgroundColor: "#00ff0044",
-        }}
+        className="absolute text-end w-20 p-1 flex flex-col right-4 top-4 bg-slate-700 text-slate-50"
       >
         <span id="fps">fps</span>
       </div>
