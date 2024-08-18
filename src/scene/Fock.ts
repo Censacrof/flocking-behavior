@@ -7,7 +7,7 @@ export class Flock extends Object3D implements Entity {
   BIRDS_NUMBER = 40;
 
   SEPARATION_RADIUS = 0.5;
-  SEPARATION_FORCE = 0;
+  SEPARATION_FORCE = 5;
 
   ALIGNMENT_RADIUS = 2;
   ALIGNMENT_FORCE = 4;
@@ -65,7 +65,7 @@ export class Flock extends Object3D implements Entity {
 
       // apply alignment
       if (birdsInAlignmentRange.length > 0) {
-        const avgAlignment = new Vector3(0, 0, 0);
+        const avgAlignment = new Vector3();
         birdsInAlignmentRange.forEach((b) =>
           avgAlignment.add(b.velocity.clone()),
         );
@@ -73,11 +73,19 @@ export class Flock extends Object3D implements Entity {
 
         const speedDiff = avgAlignment
           .clone()
-          .sub(currentBird.position.clone());
+          .sub(currentBird.velocity.clone());
 
-        currentBird.applyForce(
-          speedDiff.clone().clampLength(0, this.ALIGNMENT_FORCE),
-        );
+        currentBird.applyForce(speedDiff.clone());
+      }
+
+      // apply cohesion
+      if (birdsInCohesionRange.length > 0) {
+        const center = new Vector3();
+        birdsInCohesionRange.forEach((b) => center.add(b.position.clone()));
+        center.divideScalar(birdsInCohesionRange.length);
+
+        // const diff = center.clone().sub(currentBird.position)
+        // currentBird.applyForce(
       }
     });
   }

@@ -4,7 +4,7 @@ import { degToRad } from "three/src/math/MathUtils.js";
 
 export class Bird extends VerletObject3D {
   TARGET_SPEED = 3;
-  MAX_DISTANCE_FROM_ORIGIN = 5;
+  MAX_DISTANCE_FROM_ORIGIN = 10;
 
   constructor() {
     super();
@@ -33,19 +33,26 @@ export class Bird extends VerletObject3D {
 
     if (this.position.clone().length() > this.MAX_DISTANCE_FROM_ORIGIN) {
       // this.position.normalize().multiplyScalar(this.MAX_DISTANCE_FROM_ORIGIN);
-      this.applyForce(this.position.clone().normalize().multiplyScalar(-1));
+      this.applyForce(this.position.clone().normalize().multiplyScalar(-5));
     }
 
-    if (this.velocity.clone().length() > this.TARGET_SPEED) {
-      this.applyForce(
-        this.velocity
-          .clone()
-          .normalize()
-          .multiplyScalar(this.TARGET_SPEED)
-          .sub(this.velocity.clone())
-          .multiplyScalar(0.5),
-      );
-    }
+    // if (this.velocity.clone().length() > this.TARGET_SPEED) {
+    //   this.applyForce(
+    //     this.velocity
+    //       .clone()
+    //       .normalize()
+    //       .multiplyScalar(this.TARGET_SPEED)
+    //       .sub(this.velocity.clone())
+    //       .multiplyScalar(0.5),
+    //   );
+    // }
+
+    const targetVelocity = this.velocity
+      .clone()
+      .normalize()
+      .multiplyScalar(this.TARGET_SPEED);
+    const velocityDiff = targetVelocity.clone().sub(this.velocity);
+    this.applyForce(velocityDiff.clone().multiplyScalar(0.8));
 
     super.update(delta);
   }
