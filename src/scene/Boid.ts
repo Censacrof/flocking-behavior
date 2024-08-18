@@ -3,7 +3,7 @@ import { degToRad } from "three/src/math/MathUtils.js";
 
 import { VerletObject3D } from "./VerletObject3D";
 
-export class Bird extends VerletObject3D {
+export class Boid extends VerletObject3D {
   TARGET_SPEED = 3;
   MAX_DISTANCE_FROM_ORIGIN = 10;
 

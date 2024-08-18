@@ -1,11 +1,11 @@
 import { Object3D, Vector3 } from "three";
 
-import { Bird } from "./Bird";
+import { Boid } from "./Boid";
 import { Entity } from "./Entity";
 import { VerletObject3D } from "./VerletObject3D";
 
 export class Flock extends Object3D implements Entity {
-  BIRDS_NUMBER = 200;
+  BOIDS_NUMBER = 200;
 
   SEPARATION_RADIUS = 0.5;
   SEPARATION_FORCE = 5;
@@ -16,78 +16,78 @@ export class Flock extends Object3D implements Entity {
   COHESION_RADIUS = 6;
   COHESION_FORCE = 0.1;
 
-  birds;
+  boids;
   constructor() {
     super();
 
-    this.birds = [...Array(this.BIRDS_NUMBER)].map(() => {
-      const bird = new Bird();
-      this.add(bird);
+    this.boids = [...Array(this.BOIDS_NUMBER)].map(() => {
+      const boid = new Boid();
+      this.add(boid);
 
-      return bird;
+      return boid;
     });
   }
 
   update(delta: number): void {
-    this.applyFlockingBehaviour(this.birds);
+    this.applyFlockingBehaviour(this.boids);
 
-    this.birds.forEach((bird) => bird.update(delta));
+    this.boids.forEach((boid) => boid.update(delta));
   }
 
-  applyFlockingBehaviour(birds: VerletObject3D[]) {
-    birds.forEach((currentBird, currentIndex) => {
-      const birdsInAlignmentRange: VerletObject3D[] = [];
-      const birdsInCohesionRange: VerletObject3D[] = [];
+  applyFlockingBehaviour(boids: VerletObject3D[]) {
+    boids.forEach((currentBoid, currentIndex) => {
+      const boidsInAlignmentRange: VerletObject3D[] = [];
+      const boidsInCohesionRange: VerletObject3D[] = [];
 
-      birds.forEach((targetBird, targetIndex) => {
+      boids.forEach((targetBoid, targetIndex) => {
         if (currentIndex === targetIndex) {
           return;
         }
 
-        const currentPos = currentBird.position.clone();
-        const targetPos = targetBird.position.clone();
+        const currentPos = currentBoid.position.clone();
+        const targetPos = targetBoid.position.clone();
         const diff = targetPos.clone().sub(currentPos.clone());
         const distance = diff.length();
 
         // apply separation right awayt
         if (distance < this.SEPARATION_RADIUS) {
-          currentBird.applyForce(
+          currentBoid.applyForce(
             diff.clone().normalize().multiplyScalar(-this.SEPARATION_FORCE),
           );
         }
 
         if (distance < this.ALIGNMENT_RADIUS) {
-          birdsInAlignmentRange.push(targetBird);
+          boidsInAlignmentRange.push(targetBoid);
         }
 
         if (distance < this.COHESION_RADIUS) {
-          birdsInCohesionRange.push(targetBird);
+          boidsInCohesionRange.push(targetBoid);
         }
       });
 
       // apply alignment
-      if (birdsInAlignmentRange.length > 0) {
+      if (boidsInAlignmentRange.length > 0) {
         const avgAlignment = new Vector3();
-        birdsInAlignmentRange.forEach((b) =>
+        boidsInAlignmentRange.forEach((b) =>
           avgAlignment.add(b.velocity.clone()),
         );
-        avgAlignment.divideScalar(birdsInAlignmentRange.length);
+        avgAlignment.divideScalar(boidsInAlignmentRange.length);
 
         const speedDiff = avgAlignment
           .clone()
-          .sub(currentBird.velocity.clone());
+          .sub(currentBoid.velocity.clone());
 
-        currentBird.applyForce(speedDiff.clone());
+        currentBoid.applyForce(speedDiff.clone());
       }
 
       // apply cohesion
-      if (birdsInCohesionRange.length > 0) {
+      if (boidsInCohesionRange.length > 0) {
         const center = new Vector3();
-        birdsInCohesionRange.forEach((b) => center.add(b.position.clone()));
-        center.divideScalar(birdsInCohesionRange.length);
+        boidsInCohesionRange.forEach((b) => center.add(b.position.clone()));
+        center.divideScalar(boidsInCohesionRange.length);
 
-        const diff = center.clone().sub(currentBird.position);
-        currentBird.applyForce(
+        const diff = center.clone().sub(currentBoid.position);
+        currentBoid.applyForce(
           diff.clone().normalize().multiplyScalar(this.COHESION_FORCE),
         );
       }
