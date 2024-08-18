@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import { setupScene } from "./scene/setupScene";
+import { ThemeProvider } from "./components/themeProvider";
 
 export function App() {
   return (
-    <div className="fixed inset-0 flex flex-col">
-      <h1>Flocking Behaviour</h1>
-      <ThreeContaier />
-    </div>
+    <ThemeProvider defaultTheme="dark">
+      <div className="fixed inset-0 flex flex-col">
+        <h1>Flocking Behaviour</h1>
+        <ThreeContaier />
+      </div>
+    </ThemeProvider>
   );
 }
 
