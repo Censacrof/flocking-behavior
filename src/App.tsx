@@ -149,7 +149,7 @@ function setupScene(targetDiv: HTMLDivElement) {
     camera.position.z = CAMERA_RADIUS * Math.sin(cameraAngle);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    flock.update(delta);
+    flock.update(/* delta */ 0.016);
 
     renderer.render(scene, camera);
   }
