@@ -1,6 +1,7 @@
-import { ConeGeometry, Mesh, MeshPhysicalMaterial } from "three";
-import { VerletObject3D } from "./VerletObject3D";
+import { ConeGeometry, Mesh, MeshPhysicalMaterial, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
+
+import { VerletObject3D } from "./VerletObject3D";
 
 export class Bird extends VerletObject3D {
   TARGET_SPEED = 3;
@@ -20,7 +21,16 @@ export class Bird extends VerletObject3D {
     mesh.rotateX(degToRad(-90));
     this.add(mesh);
 
-    this.position.random().multiplyScalar(this.MAX_DISTANCE_FROM_ORIGIN);
+    this.position
+      .random()
+      .multiplyScalar(this.MAX_DISTANCE_FROM_ORIGIN * 2)
+      .sub(
+        new Vector3(
+          this.MAX_DISTANCE_FROM_ORIGIN,
+          this.MAX_DISTANCE_FROM_ORIGIN,
+          this.MAX_DISTANCE_FROM_ORIGIN,
+        ),
+      );
     this.velocity.randomDirection().multiplyScalar(this.TARGET_SPEED);
   }
 

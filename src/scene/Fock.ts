@@ -5,16 +5,16 @@ import { Entity } from "./Entity";
 import { VerletObject3D } from "./VerletObject3D";
 
 export class Flock extends Object3D implements Entity {
-  BIRDS_NUMBER = 40;
+  BIRDS_NUMBER = 200;
 
   SEPARATION_RADIUS = 0.5;
   SEPARATION_FORCE = 5;
 
   ALIGNMENT_RADIUS = 2;
-  ALIGNMENT_FORCE = 4;
+  ALIGNMENT_FORCE = 2;
 
   COHESION_RADIUS = 6;
-  COHESION_FORCE = 1;
+  COHESION_FORCE = 0.1;
 
   birds;
   constructor() {

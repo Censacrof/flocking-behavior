@@ -1,7 +1,6 @@
 import { Sky } from "three/addons/objects/Sky.js";
 import * as THREE from "three";
 import { useEffect, useRef } from "react";
-import { Bird } from "./scene/Bird";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { Flock } from "./scene/Fock";
 
@@ -15,7 +14,7 @@ export function App() {
         flexDirection: "column",
       }}
     >
-      <h1>Hello World</h1>
+      <h1>Flocking Behaviour</h1>
       <ThreeContaier />
     </div>
   );
