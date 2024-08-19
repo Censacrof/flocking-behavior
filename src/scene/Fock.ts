@@ -6,7 +6,7 @@ import { VerletObject3D } from "./VerletObject3D";
 
 export class Flock extends Object3D implements Entity {
   getNumberOfBoids() {
-    const defaultNumberOfBoids = 200;
+    const defaultNumberOfBoids = 0;
 
     const $numberOfBoids = document.querySelector(
       `#overlay input[name="numberOfBoids"]`,
