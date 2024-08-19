@@ -5,7 +5,21 @@ import { Entity } from "./Entity";
 import { VerletObject3D } from "./VerletObject3D";
 
 export class Flock extends Object3D implements Entity {
-  BOIDS_NUMBER = 200;
+  get numberOfBoids() {
+    const $numberOfBoids = document.querySelector(
+      `#overlay #numberOfBoids [role="slider"]`,
+    );
+
+    const value = Number.parseInt(
+      $numberOfBoids?.getAttribute("aria-valuenow") || "",
+    );
+
+    if (!$numberOfBoids || isNaN(value)) {
+      return 200;
+    }
+
+    return value;
+  }
 
   SEPARATION_RADIUS = 0.5;
   SEPARATION_FORCE = 5;
@@ -20,7 +34,7 @@ export class Flock extends Object3D implements Entity {
   constructor() {
     super();
 
-    this.boids = [...Array(this.BOIDS_NUMBER)].map(() => {
+    this.boids = [...Array(this.numberOfBoids)].map(() => {
       const boid = new Boid();
       this.add(boid);
 
@@ -29,9 +43,30 @@ export class Flock extends Object3D implements Entity {
   }
 
   update(delta: number): void {
+    this.adjustNumberOfBoids();
     this.applyFlockingBehaviour(this.boids);
 
     this.boids.forEach((boid) => boid.update(delta));
+  }
+
+  adjustNumberOfBoids() {
+    const targetNumberOfBoids = this.numberOfBoids;
+    const currentNumberOfBoids = this.boids.length;
+
+    if (currentNumberOfBoids < targetNumberOfBoids) {
+      [...new Array(targetNumberOfBoids - currentNumberOfBoids)].forEach(() => {
+        const boid = new Boid();
+        this.boids.push(boid);
+        this.add(boid);
+      });
+    } else if (currentNumberOfBoids > targetNumberOfBoids) {
+      for (let i = 0; i < currentNumberOfBoids - targetNumberOfBoids; i++) {
+        const boid = this.boids.pop();
+        if (boid) {
+          this.remove(boid);
+        }
+      }
+    }
   }
 
   applyFlockingBehaviour(boids: VerletObject3D[]) {

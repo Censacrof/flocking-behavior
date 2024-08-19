@@ -49,7 +49,7 @@ function ThreeContaier() {
     <div ref={ref} className="grow self-stretch relative">
       <div
         id="overlay"
-        className="absolute p-2 flex flex-col right-4 top-4 bg-slate-950 text-slate-50 w-60 bg-opacity-40 rounded"
+        className="absolute p-2 flex flex-col right-2 top-2 bg-slate-950 text-slate-50 w-60 bg-opacity-40 rounded"
       >
         <span id="fps" className="text-end">
           fps
@@ -63,6 +63,7 @@ function ThreeContaier() {
                 <FormLabel>Number of boids: {field.value}</FormLabel>
                 <FormControl>
                   <Slider
+                    id={field.name}
                     min={0}
                     max={1000}
                     step={1}
