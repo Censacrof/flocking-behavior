@@ -95,7 +95,7 @@ function ThreeContaier() {
                         <div className="flex gap-1">
                           <Slider
                             min={0}
-                            max={1000}
+                            max={500}
                             step={1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
@@ -119,8 +119,8 @@ function ThreeContaier() {
                         <div className="flex gap-1">
                           <Slider
                             min={0}
-                            max={40}
-                            step={0.01}
+                            max={10}
+                            step={0.1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
                           />
@@ -142,9 +142,9 @@ function ThreeContaier() {
                         <FormLabel>Separation force</FormLabel>
                         <div className="flex gap-1">
                           <Slider
-                            min={-40}
-                            max={40}
-                            step={0.01}
+                            min={-10}
+                            max={10}
+                            step={0.1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
                           />
@@ -167,8 +167,8 @@ function ThreeContaier() {
                         <div className="flex gap-1">
                           <Slider
                             min={0}
-                            max={40}
-                            step={0.01}
+                            max={10}
+                            step={0.1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
                           />
@@ -190,9 +190,9 @@ function ThreeContaier() {
                         <FormLabel>Alignment force</FormLabel>
                         <div className="flex gap-1">
                           <Slider
-                            min={-40}
-                            max={40}
-                            step={0.01}
+                            min={-10}
+                            max={10}
+                            step={0.1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
                           />
@@ -215,8 +215,8 @@ function ThreeContaier() {
                         <div className="flex gap-1">
                           <Slider
                             min={0}
-                            max={40}
-                            step={0.01}
+                            max={10}
+                            step={0.1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
                           />
@@ -238,9 +238,9 @@ function ThreeContaier() {
                         <FormLabel>Cohesion force</FormLabel>
                         <div className="flex gap-1">
                           <Slider
-                            min={-40}
-                            max={40}
-                            step={0.01}
+                            min={-10}
+                            max={10}
+                            step={0.1}
                             value={[field.value]}
                             onValueChange={(v) => field.onChange(v[0])}
                           />
