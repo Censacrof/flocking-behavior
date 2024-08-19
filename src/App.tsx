@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "./components/ui/form";
 import { Slider } from "./components/ui/slider";
+import { Input } from "./components/ui/input";
 
 export function App() {
   return (
@@ -41,7 +42,7 @@ function ThreeContaier() {
 
   const form = useForm({
     defaultValues: {
-      numberOfBoids: [200],
+      numberOfBoids: 200,
     },
   });
 
@@ -60,16 +61,18 @@ function ThreeContaier() {
             name="numberOfBoids"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Number of boids: {field.value}</FormLabel>
+                <FormLabel>Number of boids</FormLabel>
                 <FormControl>
-                  <Slider
-                    id={field.name}
-                    min={0}
-                    max={1000}
-                    step={1}
-                    {...field}
-                    onValueChange={field.onChange}
-                  />
+                  <div className="flex gap-1">
+                    <Slider
+                      min={0}
+                      max={1000}
+                      step={1}
+                      value={[field.value]}
+                      onValueChange={field.onChange}
+                    />
+                    <Input className="h-6 w-14" {...field} />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

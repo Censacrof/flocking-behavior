@@ -6,16 +6,20 @@ import { VerletObject3D } from "./VerletObject3D";
 
 export class Flock extends Object3D implements Entity {
   get numberOfBoids() {
+    const defaultNumberOfBoids = 200;
+
     const $numberOfBoids = document.querySelector(
-      `#overlay #numberOfBoids [role="slider"]`,
+      `#overlay input[name="numberOfBoids"]`,
     );
 
-    const value = Number.parseInt(
-      $numberOfBoids?.getAttribute("aria-valuenow") || "",
-    );
+    if (!($numberOfBoids instanceof HTMLInputElement)) {
+      return defaultNumberOfBoids;
+    }
+
+    const value = Number.parseInt($numberOfBoids.value || "");
 
     if (!$numberOfBoids || isNaN(value)) {
-      return 200;
+      return defaultNumberOfBoids;
     }
 
     return value;
