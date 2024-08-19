@@ -17,6 +17,15 @@ import { z } from "zod";
 
 const FormSchema = z.object({
   numberOfBoids: z.coerce.number().int().gte(0),
+
+  separationRadius: z.coerce.number().gte(0),
+  separationForce: z.coerce.number(),
+
+  alignmentRadius: z.coerce.number().gte(0),
+  alignmentForce: z.coerce.number(),
+
+  cohesionRadius: z.coerce.number().gte(0),
+  cohesionForce: z.coerce.number(),
 });
 
 type FormSchema = z.infer<typeof FormSchema>;
@@ -52,6 +61,12 @@ function ThreeContaier() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       numberOfBoids: 200,
+      separationRadius: 0.5,
+      separationForce: 5,
+      alignmentRadius: 2,
+      alignmentForce: 2,
+      cohesionRadius: 6,
+      cohesionForce: 0.1,
     },
     mode: "all",
   });
@@ -78,6 +93,150 @@ function ThreeContaier() {
                       min={0}
                       max={1000}
                       step={1}
+                      value={[field.value]}
+                      onValueChange={(v) => field.onChange(v[0])}
+                    />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="separationRadius"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Separation radius</FormLabel>
+                  <div className="flex gap-1">
+                    <Slider
+                      min={0}
+                      max={40}
+                      step={0.01}
+                      value={[field.value]}
+                      onValueChange={(v) => field.onChange(v[0])}
+                    />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="separationForce"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Separation force</FormLabel>
+                  <div className="flex gap-1">
+                    <Slider
+                      min={-40}
+                      max={40}
+                      step={0.01}
+                      value={[field.value]}
+                      onValueChange={(v) => field.onChange(v[0])}
+                    />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="alignmentRadius"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Alignment radius</FormLabel>
+                  <div className="flex gap-1">
+                    <Slider
+                      min={0}
+                      max={40}
+                      step={0.01}
+                      value={[field.value]}
+                      onValueChange={(v) => field.onChange(v[0])}
+                    />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="alignmentForce"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Alignment force</FormLabel>
+                  <div className="flex gap-1">
+                    <Slider
+                      min={-40}
+                      max={40}
+                      step={0.01}
+                      value={[field.value]}
+                      onValueChange={(v) => field.onChange(v[0])}
+                    />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="cohesionRadius"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Cohesion radius</FormLabel>
+                  <div className="flex gap-1">
+                    <Slider
+                      min={0}
+                      max={40}
+                      step={0.01}
+                      value={[field.value]}
+                      onValueChange={(v) => field.onChange(v[0])}
+                    />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="cohesionForce"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Cohesion force</FormLabel>
+                  <div className="flex gap-1">
+                    <Slider
+                      min={-40}
+                      max={40}
+                      step={0.01}
                       value={[field.value]}
                       onValueChange={(v) => field.onChange(v[0])}
                     />
