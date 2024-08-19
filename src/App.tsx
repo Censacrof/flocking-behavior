@@ -18,6 +18,7 @@ import {
   setSimulationParameters,
   SimulationParameters,
 } from "./scene/simulationParameters";
+import { Button } from "./components/ui/button";
 
 export function App() {
   return (
@@ -68,7 +69,7 @@ function ThreeContaier() {
     <div ref={ref} className="grow self-stretch relative">
       <div
         id="overlay"
-        className="absolute p-2 flex flex-col right-2 top-2 bg-slate-950 text-slate-50 w-60 bg-opacity-40 rounded"
+        className="absolute p-2 flex flex-col right-2 top-2 bg-slate-950 text-slate-50 w-60 bg-opacity-40 rounded gap-1"
       >
         <span id="fps" className="text-end">
           fps
@@ -242,6 +243,15 @@ function ThreeContaier() {
               );
             }}
           />
+          <Button
+            variant="default"
+            onClick={() => {
+              form.reset();
+            }}
+            size="sm"
+          >
+            Reset
+          </Button>
         </Form>
       </div>
     </div>
