@@ -19,6 +19,12 @@ import {
   SimulationParameters,
 } from "./scene/simulationParameters";
 import { Button } from "./components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./components/ui/accordion";
 
 export function App() {
   return (
@@ -69,190 +75,199 @@ function ThreeContaier() {
     <div ref={ref} className="grow self-stretch relative">
       <div
         id="overlay"
-        className="absolute p-2 flex flex-col right-2 top-2 bg-slate-950 text-slate-50 w-60 bg-opacity-40 rounded gap-1"
+        className="absolute p-2 flex flex-col right-2 top-2 bg-slate-950 text-slate-50 w-80 bg-opacity-40 rounded gap-1"
       >
         <span id="fps" className="text-end">
           fps
         </span>
-        <Form {...form}>
-          <FormField
-            control={form.control}
-            name="numberOfBoids"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Number of boids</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={0}
-                      max={1000}
-                      step={1}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="separationRadius"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Separation radius</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={0}
-                      max={40}
-                      step={0.01}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="separationForce"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Separation force</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={-40}
-                      max={40}
-                      step={0.01}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="alignmentRadius"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Alignment radius</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={0}
-                      max={40}
-                      step={0.01}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="alignmentForce"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Alignment force</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={-40}
-                      max={40}
-                      step={0.01}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="cohesionRadius"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Cohesion radius</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={0}
-                      max={40}
-                      step={0.01}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="cohesionForce"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Cohesion force</FormLabel>
-                  <div className="flex gap-1">
-                    <Slider
-                      min={-40}
-                      max={40}
-                      step={0.01}
-                      value={[field.value]}
-                      onValueChange={(v) => field.onChange(v[0])}
-                    />
-                    <FormControl>
-                      <Input className="h-6 w-14" {...field} />
-                    </FormControl>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <Button
-            variant="default"
-            onClick={() => {
-              form.reset();
-            }}
-            size="sm"
-          >
-            Reset
-          </Button>
-        </Form>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1" className="border-transparent">
+            <AccordionTrigger>Simulation parameters</AccordionTrigger>
+            <AccordionContent>
+              <Form {...form}>
+                <FormField
+                  control={form.control}
+                  name="numberOfBoids"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Number of boids</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={0}
+                            max={1000}
+                            step={1}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="separationRadius"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Separation radius</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={0}
+                            max={40}
+                            step={0.01}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="separationForce"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Separation force</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={-40}
+                            max={40}
+                            step={0.01}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="alignmentRadius"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Alignment radius</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={0}
+                            max={40}
+                            step={0.01}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="alignmentForce"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Alignment force</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={-40}
+                            max={40}
+                            step={0.01}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="cohesionRadius"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Cohesion radius</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={0}
+                            max={40}
+                            step={0.01}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="cohesionForce"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Cohesion force</FormLabel>
+                        <div className="flex gap-1">
+                          <Slider
+                            min={-40}
+                            max={40}
+                            step={0.01}
+                            value={[field.value]}
+                            onValueChange={(v) => field.onChange(v[0])}
+                          />
+                          <FormControl>
+                            <Input className="h-6 w-14" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                <div className="flex pt-4">
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      form.reset();
+                    }}
+                    size="sm"
+                  >
+                    Reset
+                  </Button>
+                </div>
+              </Form>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );
