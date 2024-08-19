@@ -1,5 +1,5 @@
 import { Sky } from "three/examples/jsm/Addons.js";
-import { Flock } from "./Fock";
+import { Flock } from "./Flock";
 import { degToRad, MathUtils } from "three/src/math/MathUtils.js";
 import {
   DirectionalLight,
