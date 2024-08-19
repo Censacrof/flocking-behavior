@@ -13,22 +13,11 @@ import {
 import { Slider } from "./components/ui/slider";
 import { Input } from "./components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const FormSchema = z.object({
-  numberOfBoids: z.coerce.number().int().gte(0),
-
-  separationRadius: z.coerce.number().gte(0),
-  separationForce: z.coerce.number(),
-
-  alignmentRadius: z.coerce.number().gte(0),
-  alignmentForce: z.coerce.number(),
-
-  cohesionRadius: z.coerce.number().gte(0),
-  cohesionForce: z.coerce.number(),
-});
-
-type FormSchema = z.infer<typeof FormSchema>;
+import {
+  defaultSimulationParameters,
+  setSimulationParameters,
+  SimulationParameters,
+} from "./scene/simulationParameters";
 
 export function App() {
   return (
@@ -57,19 +46,23 @@ function ThreeContaier() {
     };
   }, []);
 
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      numberOfBoids: 200,
-      separationRadius: 0.5,
-      separationForce: 5,
-      alignmentRadius: 2,
-      alignmentForce: 2,
-      cohesionRadius: 6,
-      cohesionForce: 0.1,
-    },
+  const form = useForm<SimulationParameters>({
+    resolver: zodResolver(SimulationParameters),
+    defaultValues: defaultSimulationParameters,
     mode: "all",
   });
+
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      try {
+        setSimulationParameters(value);
+      } catch {
+        //
+      }
+    });
+
+    return subscription.unsubscribe;
+  }, [form]);
 
   return (
     <div ref={ref} className="grow self-stretch relative">

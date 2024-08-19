@@ -3,42 +3,16 @@ import { Object3D, Vector3 } from "three";
 import { Boid } from "./Boid";
 import { Entity } from "./Entity";
 import { VerletObject3D } from "./VerletObject3D";
+import { getSimulationParameters } from "./simulationParameters";
 
 export class Flock extends Object3D implements Entity {
-  getNumberOfBoids() {
-    const defaultNumberOfBoids = 0;
-
-    const $numberOfBoids = document.querySelector(
-      `#overlay input[name="numberOfBoids"]`,
-    );
-
-    if (!($numberOfBoids instanceof HTMLInputElement)) {
-      return defaultNumberOfBoids;
-    }
-
-    const value = Number.parseInt($numberOfBoids.value || "");
-
-    if (!$numberOfBoids || isNaN(value)) {
-      return defaultNumberOfBoids;
-    }
-
-    return value;
-  }
-
-  SEPARATION_RADIUS = 0.5;
-  SEPARATION_FORCE = 5;
-
-  ALIGNMENT_RADIUS = 2;
-  ALIGNMENT_FORCE = 2;
-
-  COHESION_RADIUS = 6;
-  COHESION_FORCE = 0.1;
-
   boids;
   constructor() {
     super();
 
-    this.boids = [...Array(this.getNumberOfBoids())].map(() => {
+    const numberOfBoids = getSimulationParameters().numberOfBoids;
+
+    this.boids = [...Array(numberOfBoids)].map(() => {
       const boid = new Boid();
       this.add(boid);
 
@@ -54,7 +28,7 @@ export class Flock extends Object3D implements Entity {
   }
 
   adjustNumberOfBoids() {
-    const targetNumberOfBoids = this.getNumberOfBoids();
+    const targetNumberOfBoids = getSimulationParameters().numberOfBoids;
     const currentNumberOfBoids = this.boids.length;
 
     if (currentNumberOfBoids < targetNumberOfBoids) {
@@ -74,6 +48,15 @@ export class Flock extends Object3D implements Entity {
   }
 
   applyFlockingBehaviour(boids: VerletObject3D[]) {
+    const {
+      separationRadius,
+      separationForce,
+      alignmentRadius,
+      alignmentForce,
+      cohesionRadius,
+      cohesionForce,
+    } = getSimulationParameters();
+
     boids.forEach((currentBoid, currentIndex) => {
       const boidsInAlignmentRange: VerletObject3D[] = [];
       const boidsInCohesionRange: VerletObject3D[] = [];
@@ -89,17 +72,17 @@ export class Flock extends Object3D implements Entity {
         const distance = diff.length();
 
         // apply separation right awayt
-        if (distance < this.SEPARATION_RADIUS) {
+        if (distance < separationRadius) {
           currentBoid.applyForce(
-            diff.clone().normalize().multiplyScalar(-this.SEPARATION_FORCE),
+            diff.clone().normalize().multiplyScalar(-separationForce),
           );
         }
 
-        if (distance < this.ALIGNMENT_RADIUS) {
+        if (distance < alignmentRadius) {
           boidsInAlignmentRange.push(targetBoid);
         }
 
-        if (distance < this.COHESION_RADIUS) {
+        if (distance < cohesionRadius) {
           boidsInCohesionRange.push(targetBoid);
         }
       });
@@ -116,7 +99,9 @@ export class Flock extends Object3D implements Entity {
           .clone()
           .sub(currentBoid.velocity.clone());
 
-        currentBoid.applyForce(speedDiff.clone());
+        currentBoid.applyForce(
+          speedDiff.clone().multiplyScalar(alignmentForce),
+        );
       }
 
       // apply cohesion
@@ -127,7 +112,7 @@ export class Flock extends Object3D implements Entity {
 
         const diff = center.clone().sub(currentBoid.position);
         currentBoid.applyForce(
-          diff.clone().normalize().multiplyScalar(this.COHESION_FORCE),
+          diff.clone().normalize().multiplyScalar(cohesionForce),
         );
       }
     });
