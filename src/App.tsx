@@ -12,6 +12,14 @@ import {
 } from "./components/ui/form";
 import { Slider } from "./components/ui/slider";
 import { Input } from "./components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const FormSchema = z.object({
+  numberOfBoids: z.coerce.number().int().gte(0),
+});
+
+type FormSchema = z.infer<typeof FormSchema>;
 
 export function App() {
   return (
@@ -40,10 +48,12 @@ function ThreeContaier() {
     };
   }, []);
 
-  const form = useForm({
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       numberOfBoids: 200,
     },
+    mode: "all",
   });
 
   return (
@@ -59,24 +69,26 @@ function ThreeContaier() {
           <FormField
             control={form.control}
             name="numberOfBoids"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Number of boids</FormLabel>
-                <FormControl>
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Number of boids</FormLabel>
                   <div className="flex gap-1">
                     <Slider
                       min={0}
                       max={1000}
                       step={1}
                       value={[field.value]}
-                      onValueChange={field.onChange}
+                      onValueChange={(v) => field.onChange(v[0])}
                     />
-                    <Input className="h-6 w-14" {...field} />
+                    <FormControl>
+                      <Input className="h-6 w-14" {...field} />
+                    </FormControl>
                   </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
         </Form>
       </div>
