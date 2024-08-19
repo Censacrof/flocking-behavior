@@ -5,7 +5,7 @@ import { Entity } from "./Entity";
 import { VerletObject3D } from "./VerletObject3D";
 
 export class Flock extends Object3D implements Entity {
-  get numberOfBoids() {
+  getNumberOfBoids() {
     const defaultNumberOfBoids = 200;
 
     const $numberOfBoids = document.querySelector(
@@ -38,7 +38,7 @@ export class Flock extends Object3D implements Entity {
   constructor() {
     super();
 
-    this.boids = [...Array(this.numberOfBoids)].map(() => {
+    this.boids = [...Array(this.getNumberOfBoids())].map(() => {
       const boid = new Boid();
       this.add(boid);
 
@@ -54,7 +54,7 @@ export class Flock extends Object3D implements Entity {
   }
 
   adjustNumberOfBoids() {
-    const targetNumberOfBoids = this.numberOfBoids;
+    const targetNumberOfBoids = this.getNumberOfBoids();
     const currentNumberOfBoids = this.boids.length;
 
     if (currentNumberOfBoids < targetNumberOfBoids) {
