@@ -10,8 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./components/ui/form";
-import { Slider } from "@radix-ui/react-slider";
-import { Input } from "./components/ui/input";
+import { Slider } from "./components/ui/slider";
 
 export function App() {
   return (
@@ -42,10 +41,7 @@ function ThreeContaier() {
 
   const form = useForm({
     defaultValues: {
-      numberOfBoids: "200",
-    },
-    values: {
-      numberOfBoids: "200",
+      numberOfBoids: [200],
     },
   });
 
@@ -53,18 +49,26 @@ function ThreeContaier() {
     <div ref={ref} className="grow self-stretch relative">
       <div
         id="overlay"
-        className="absolute text-end p-1 flex flex-col right-4 top-4 bg-slate-700 text-slate-50"
+        className="absolute p-2 flex flex-col right-4 top-4 bg-slate-950 text-slate-50 w-60 bg-opacity-40 rounded"
       >
-        <span id="fps">fps</span>
+        <span id="fps" className="text-end">
+          fps
+        </span>
         <Form {...form}>
           <FormField
             control={form.control}
             name="numberOfBoids"
             render={({ field }) => (
-              <FormItem className="flex flex-row gap-1 items-center">
-                <FormLabel>Number of boids</FormLabel>
+              <FormItem>
+                <FormLabel>Number of boids: {field.value}</FormLabel>
                 <FormControl>
-                  <Input className="h-6" {...field} />
+                  <Slider
+                    min={0}
+                    max={1000}
+                    step={1}
+                    {...field}
+                    onValueChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
